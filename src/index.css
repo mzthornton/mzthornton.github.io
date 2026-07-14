@@ -1,0 +1,13 @@
+/* Project-specific styles. Bootstrap is imported in main.jsx and provides
+   the bulk of the styling; add your own overrides below. */
+
+body {
+  min-height: 100vh;
+  /* A warm festival-at-sunset gradient behind the content. */
+  background: linear-gradient(160deg, #fff5f0 0%, #fdeefb 50%, #eef2ff 100%);
+}
+
+/* Make the sticky navbar's active link a little more obvious. */
+.navbar .nav-link.active {
+  font-weight: 600;
+}
