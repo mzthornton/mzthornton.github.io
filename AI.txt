@@ -1,7 +1,7 @@
 Approximately 95% of the code is AI-generated.
 
 What AI was used to achieve:
-I used Claude Opus 5 to build the Music Festival Planner iteratively from a set of descriptions.
+I used Claude Opus 5 to build the Music Festival Planner iteratively from a set of descriptions and requirements.
 The first prompt gave it the basic layout and flow of the website from my proposal.
 From there, I built on top of the flow of the website to add and adjust pieces of functionality.
 
