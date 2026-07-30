@@ -1,0 +1,16 @@
+Approximately 95% of the code is AI-generated.
+
+What AI was used to achieve:
+I used Claude Opus 5 to build the Music Festival Planner iteratively from a set of descriptions.
+The first prompt gave it the basic layout and flow of the website from my proposal.
+From there, I built on top of the flow of the website to add and adjust pieces of functionality.
+
+For example I prompted it to implement login and signup functionality to use localStorage to maintaint accounts.
+I asked it to generate a fake data for festivals, including the details such as dates, artists, set times and map interest points all of which is hardcoded.
+I asked it to implement filtering functinoality for festival date and artists attending the festival.
+I asked it to create four tabs (About / Map / Schedule / My Plan) as nested routes, with arrows to step through them and a save button that opens the finished plan.
+I asked it to create map the plan drawn as a numbered route across the grounds with travel gaps and time conflicts called out. 
+Content and iteration — the whole dataset (7 festivals, 80 sets, 64 map points) plus later refinements: dropping genre tags, narrowing clash warnings to the route review, removing filter quick-picks.
+
+My role was providing context and requirements to Claude based on my design. I specified explicit pieces of React functionality that we learned in class so I could easily review the output.
+During review of code, I made minor but inconsequential edits leading to the 95% esimtate.

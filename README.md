@@ -1,10 +1,20 @@
 # Music Festival Planner (CS 571 Web Project)
 
 A **client-side-only** React single-page application (SPA) built to be hosted on
-**GitHub Pages**. It's themed as a "Music Festival Planner," but it's a **dummy
-demo** — the festival theming is just copy and styling; there are no real
-planning features. There is no server / backend and no Next.js — everything runs
+**GitHub Pages**. There is no server / backend and no Next.js — everything runs
 in the browser.
+
+Screens:
+
+- **Landing** (`/`) — log in or create an account. Everything else is gated
+  behind it; the session is kept in `sessionStorage`, accounts and saved plans in
+  `localStorage`.
+- **Festivals** (`/festivals`) — upcoming festivals sorted by nearest start date,
+  filterable by date window and by artist/genre search.
+- **Festival detail** (`/festivals/:id/…`) — four nested-route tabs per festival:
+  **about**, **map**, **schedule**, and **plan**. Users build a plan by saving
+  artists from the schedule and interest points (or their own dropped pins) from
+  the map.
 
 ## Tech stack
 
@@ -30,16 +40,31 @@ GitHub Pages serves.
 │   └── .nojekyll           # Tells GitHub Pages not to run Jekyll on the output
 ├── docs/                   # Build output (committed & served by GitHub Pages)
 └── src/
-    ├── main.jsx            # App entry: mounts React, wraps app in <HashRouter>
+    ├── main.jsx            # App entry: mounts React, <HashRouter> + context providers
     ├── App.jsx             # Route table + page layout (NavBar / footer)
     ├── index.css           # Project styles (on top of Bootstrap)
+    ├── data/
+    │   └── festivals.js    # All festival data: lineups, set times, map points
+    ├── lib/
+    │   ├── festivalUtils.js # Dates, filtering, schedule + route/overlap math
+    │   └── storage.js      # session/localStorage helpers, password hashing
+    ├── context/
+    │   ├── AuthContext.jsx # Login state (sessionStorage-backed)
+    │   └── PlanContext.jsx # Saved artists / map points per user + festival
     ├── components/
-    │   └── NavBar.jsx      # Top nav bar (React Bootstrap Navbar + React Router links)
+    │   ├── NavBar.jsx      # Top nav bar (React Bootstrap Navbar + React Router links)
+    │   ├── RequireAuth.jsx # Route guard; redirects to the landing page
+    │   ├── FestivalCard.jsx    # One festival in the list
+    │   ├── FestivalFilters.jsx # Date-range + artist-search controls
+    │   ├── GroundsMap.jsx  # Clickable grounds map (no mapping library)
+    │   └── PlanRouteMap.jsx # Read-only map: a saved day drawn as a numbered route
     └── pages/
-        ├── Home.jsx        # Landing page (Cards, Button, programmatic nav)
-        ├── About.jsx       # Static info page (ListGroup, Alert)
-        ├── Contact.jsx     # Controlled React Bootstrap form
-        └── NotFound.jsx    # Catch-all 404 page
+        ├── Landing.jsx     # Log in / create account
+        ├── Festivals.jsx   # Filterable, date-sorted festival list
+        ├── FestivalDetail.jsx  # Festival header + tab nav + <Outlet>
+        ├── MyPlans.jsx     # Every saved plan, with the day's route on the map
+        ├── NotFound.jsx    # Catch-all 404 page
+        └── festival/       # The four tabs: About, Map, Schedule, Plan
 ```
 
 ## Prerequisites
@@ -114,14 +139,16 @@ Repeat steps 1–2 whenever you want to update the live site.
 ### Routing (client-side, GitHub-Pages-safe)
 
 - `src/main.jsx` wraps the app in **`<HashRouter>`**. Routes look like
-  `/#/about`. GitHub Pages is a static host with no server-side routing, so a
+  `/#/festivals`. GitHub Pages is a static host with no server-side routing, so a
   plain `BrowserRouter` would return a 404 when you refresh a deep link.
   HashRouter avoids that because everything after the `#` never hits the server.
 - `src/App.jsx` declares the routes with `<Routes>` / `<Route>` (React Router's
   **declarative** mode). The `path="*"` route is the 404 catch-all.
+- The per-festival tabs are **nested routes** rendered into an `<Outlet>`, so each
+  tab is a real URL (`/#/festivals/solstice-sound/schedule`) you can bookmark or
+  reload.
 - Navigation uses React Router's `<NavLink>` / `<Link>` (client-side, no page
-  reload) and `useNavigate()` for programmatic navigation (see the button on
-  the Home page).
+  reload) and `useNavigate()` for programmatic navigation (e.g. after login).
 
 ### Relative asset paths
 

@@ -11,3 +11,452 @@ body {
 .navbar .nav-link.active {
   font-weight: 600;
 }
+
+/* --- Festival list ------------------------------------------------------- */
+
+.festival-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.festival-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 12%) !important;
+}
+
+/* --- Festival detail header --------------------------------------------- */
+
+.festival-hero {
+  color: #fff;
+  background: linear-gradient(120deg, #6d28d9, #db2777);
+}
+
+/* Four rotating gradients so consecutive festivals don't all look identical.
+   FestivalDetail sets the index through data-hero. */
+.festival-hero[data-hero='1'] {
+  background: linear-gradient(120deg, #0f766e, #2563eb);
+}
+
+.festival-hero[data-hero='2'] {
+  background: linear-gradient(120deg, #b45309, #db2777);
+}
+
+.festival-hero[data-hero='3'] {
+  background: linear-gradient(120deg, #1e3a8a, #7c3aed);
+}
+
+.festival-tabs .nav-link {
+  font-weight: 500;
+}
+
+/*
+  The festival toolbar: step arrows either side of the tabs, save button hard
+  right. Everything sits on the bottom edge so the tabs still meet the underline.
+
+  The underline lives here rather than on .nav-tabs so it carries on behind the
+  arrows and the save button. Bootstrap already pulls each .nav-link down by the
+  border width, so the active tab's white bottom edge covers this line the same
+  way it covers the one it replaces.
+*/
+.festival-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.festival-toolbar .nav-tabs {
+  flex-wrap: nowrap;
+  border-bottom: 0;
+}
+
+/* Square-ish arrows, sized to sit level with the tab labels. */
+.festival-toolbar__arrow {
+  margin-bottom: 0.35rem;
+  padding: 0.1rem 0.5rem;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.festival-toolbar__save {
+  margin-bottom: 0.35rem;
+}
+
+/*
+  On a phone the four tabs already fill the row, so the toolbar wraps: arrows and
+  tabs first, the save button full width beneath them. The tabs go back to
+  wrapping too — a sideways scroll inside a wrapped toolbar is a worse trade.
+*/
+@media (max-width: 575.98px) {
+  .festival-toolbar {
+    gap: 0.25rem;
+  }
+
+  .festival-toolbar .nav-tabs {
+    flex-wrap: wrap;
+  }
+
+  .festival-toolbar__save {
+    width: 100%;
+  }
+}
+
+/* --- Schedule / plan rows ----------------------------------------------- */
+
+/* A saved set gets a green edge so it stands out while scanning a long day. */
+.set-row--saved {
+  border-left: 4px solid var(--bs-success);
+  background-color: rgb(25 135 84 / 6%);
+}
+
+.set-row__time {
+  min-width: 5.5rem;
+}
+
+/* --- Schedule timetable -------------------------------------------------- */
+
+/* Four stage columns don't fit a phone, so the grid scrolls sideways instead of
+   squeezing the columns down to nothing. */
+.schedule-grid-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.schedule-grid {
+  display: grid;
+  position: relative;
+  min-width: 100%;
+  /* Columns and rows are sized inline by ScheduleGrid — they depend on how many
+     stages and hours the day covers. */
+}
+
+.schedule-grid__corner {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.schedule-grid__head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 0.35rem 0.5rem;
+  margin: 0 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0.4rem 0.4rem 0 0;
+  background: var(--bs-dark);
+  color: #fff;
+}
+
+/* One faint rule per hour, spanning every stage column, drawn under the sets. */
+.schedule-grid__rule {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgb(0 0 0 / 10%);
+  pointer-events: none;
+}
+
+.schedule-grid__time {
+  grid-column: 1;
+  padding-right: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-align: right;
+  /* Sit at the top of the hour it labels, level with that hour's rule. */
+  align-self: start;
+}
+
+/*
+  A set block. Its row span is its real length, so a 90-minute set is visibly
+  half again as tall as a 60-minute one and overlapping sets in different
+  columns line up beside each other.
+*/
+.schedule-block {
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  margin: 1px 0.15rem;
+  padding: 0.2rem 0.4rem;
+  text-align: left;
+  border: 1px solid rgb(109 40 217 / 35%);
+  border-left: 3px solid #6d28d9;
+  border-radius: 0.35rem;
+  background: rgb(109 40 217 / 8%);
+  color: #212529;
+  cursor: pointer;
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.schedule-block:hover,
+.schedule-block:focus-visible {
+  background: rgb(109 40 217 / 16%);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 15%);
+}
+
+.schedule-block--saved {
+  border-color: rgb(25 135 84 / 45%);
+  border-left-color: var(--bs-success);
+  background: rgb(25 135 84 / 14%);
+}
+
+.schedule-block--saved:hover,
+.schedule-block--saved:focus-visible {
+  background: rgb(25 135 84 / 22%);
+}
+
+.schedule-block__name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.schedule-block__meta {
+  font-size: 0.66rem;
+  color: #5c636a;
+  line-height: 1.1;
+}
+
+/* --- Grounds map -------------------------------------------------------- */
+
+/*
+  The "map" is a plain block element with pins positioned by percentage, so it
+  scales with its container and needs no mapping library. aspect-ratio keeps the
+  pin coordinates meaningful at every width.
+*/
+.grounds-map {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgb(0 0 0 / 10%);
+  background-color: #e8f2e4;
+  background-image:
+    /* a path winding across the grounds */
+    linear-gradient(
+      105deg,
+      transparent 46%,
+      rgb(180 160 120 / 55%) 46%,
+      rgb(180 160 120 / 55%) 50%,
+      transparent 50%
+    ),
+    /* water in the bottom-left corner */
+    radial-gradient(circle at 0% 100%, rgb(125 190 220 / 70%) 0 22%, transparent 22%),
+    /* tree cover top-left */
+    radial-gradient(circle at 12% 18%, rgb(90 150 90 / 45%) 0 14%, transparent 14%),
+    /* open field */
+    linear-gradient(160deg, #eef7e9 0%, #dceccf 55%, #cfe3c4 100%);
+}
+
+.grounds-map--dropping {
+  cursor: crosshair;
+  box-shadow: inset 0 0 0 3px var(--bs-warning);
+}
+
+/* The read-only route map on My Plans: same grounds, nothing to click. */
+.grounds-map--static {
+  cursor: default;
+}
+
+.grounds-map__label {
+  position: absolute;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgb(0 0 0 / 45%);
+}
+
+.grounds-map__label--gate {
+  left: 50%;
+  bottom: 0.35rem;
+  transform: translateX(-50%);
+}
+
+/*
+  Each pin is a <button> so it is keyboard-reachable and announced properly.
+  translate(-50%, -50%) centres it on its coordinate instead of hanging off it.
+*/
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.map-pin__icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--pin-color, #666);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 25%);
+  transition: transform 0.12s ease;
+}
+
+.map-pin__name {
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.05rem 0.3rem;
+  border-radius: 0.4rem;
+  background: rgb(255 255 255 / 85%);
+  color: #212529;
+  white-space: nowrap;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-pin:hover .map-pin__icon,
+.map-pin:focus-visible .map-pin__icon {
+  transform: scale(1.18);
+}
+
+.map-pin--saved .map-pin__icon {
+  border-color: var(--bs-success);
+  box-shadow: 0 0 0 3px rgb(25 135 84 / 30%);
+}
+
+.map-pin--active .map-pin__icon {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+/* Pins the user dropped sit above the official ones. */
+.map-pin--custom {
+  z-index: 2;
+}
+
+/* --- Saved-plan route on the map ---------------------------------------- */
+
+/*
+  Order-of-the-day markers. These are <div>s, not buttons: the whole route map is
+  one role="img" and the numbered itinerary next to it carries the same
+  information for anyone not looking at pixels.
+*/
+.map-pin--static {
+  cursor: default;
+}
+
+.map-pin--stop {
+  /* Above the faded saved spots, including the user's own pins. */
+  z-index: 3;
+}
+
+.map-pin--stop .map-pin__icon {
+  background: var(--bs-primary);
+  border-color: #fff;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgb(13 110 253 / 30%);
+}
+
+/* Set times under a stop label. */
+.map-pin__meta {
+  font-size: 0.6rem;
+  padding: 0 0.25rem;
+  border-radius: 0.4rem;
+  background: rgb(255 255 255 / 80%);
+  color: #495057;
+  white-space: nowrap;
+}
+
+/* Saved spots that aren't part of today's walk sit back a step. */
+.map-pin--muted .map-pin__icon {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 15%);
+}
+
+.map-pin--muted .map-pin__name {
+  font-weight: 500;
+  color: #495057;
+  background: rgb(255 255 255 / 70%);
+}
+
+/* The dashed line joining the stops in order. */
+.map-route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.map-route polyline {
+  fill: none;
+  stroke: rgb(13 110 253 / 65%);
+  stroke-width: 3;
+  stroke-dasharray: 7 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Numbers in the itinerary and the map legend, matching the map markers. */
+.plan-route__num,
+.map-legend-dot {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--bs-primary);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.map-legend-dot {
+  display: inline-grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.65rem;
+  vertical-align: text-bottom;
+}
+
+/* The walk between two stops, drawn as a dotted connector down the list. */
+.plan-route__gap {
+  margin: 0.35rem 0 0.35rem 0.8rem;
+  padding: 0.1rem 0 0.1rem 1.05rem;
+  border-left: 2px dashed rgb(13 110 253 / 45%);
+  color: #6c757d;
+}
+
+/* --- My Plans cards ------------------------------------------------------ */
+
+/*
+  A plan card can be scrolled to and focused when you arrive from a festival's
+  save button. The top margin clears the sticky navbar so the card's header isn't
+  hidden under it, and the ring marks which plan you just came from — it fades
+  after a couple of seconds so it never reads as a warning.
+*/
+.plan-card {
+  scroll-margin-top: 4.5rem;
+}
+
+.plan-card:focus-visible,
+.plan-card--just-saved {
+  outline: 3px solid rgb(25 135 84 / 55%);
+  outline-offset: 2px;
+}
+
+/* Hide pin labels on narrow screens — they overlap badly at phone widths. */
+@media (max-width: 575.98px) {
+  .map-pin__name,
+  .map-pin__meta {
+    display: none;
+  }
+}
